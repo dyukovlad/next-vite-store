@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useReducer, useEffect, ReactNode, useCallback } from 'react';
 import { Product } from '@/types/product';
+import { staticProducts } from '@/data/staticProducts';
 
 interface ProductState {
   products: Product[];
@@ -102,7 +103,9 @@ export const ProductProvider: React.FC<ProductProviderProps> = ({ children }) =>
       const data = await response.json();
       dispatch({ type: 'FETCH_SUCCESS', payload: data.products });
     } catch (err) {
-      dispatch({ type: 'FETCH_ERROR', payload: err instanceof Error ? err.message : 'An error occurred' });
+      console.warn('Failed to fetch from API, using static data:', err);
+      // Fallback to static data
+      dispatch({ type: 'FETCH_SUCCESS', payload: staticProducts });
     }
   }, []);
 
