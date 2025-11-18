@@ -2,9 +2,11 @@
 
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { ProductCard } from '@/components/ProductCard';
+import { ProductCardSkeleton } from '@/components/ProductCardSkeleton';
 import { ProductProvider, useProduct } from '@/contexts/ProductContext';
 import { Input } from '@/components/ui/input';
 import { CatalogLayout } from '@/components/CatalogLayout';
+import { ErrorBoundary } from '@/components/ErrorBoundary';
 
 function CatalogContent() {
   const { products, loading, error, hasMore, fetchMoreProducts, searchQuery, setSearchQuery } = useProduct();
@@ -20,7 +22,11 @@ function CatalogContent() {
   if (loading && products.length === 0) {
     return (
       <CatalogLayout>
-        <p>Loading...</p>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          {Array.from({ length: 8 }).map((_, index) => (
+            <ProductCardSkeleton key={index} />
+          ))}
+        </div>
       </CatalogLayout>
     );
   }
@@ -34,6 +40,7 @@ function CatalogContent() {
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
           className="max-w-sm"
+          aria-label="Search products"
         />
       </div>
       <div id="scrollableDiv" style={{ height: '80vh', overflow: 'auto' }}>
@@ -61,8 +68,10 @@ function CatalogContent() {
 
 export default function Home() {
   return (
-    <ProductProvider>
-      <CatalogContent />
-    </ProductProvider>
+    <ErrorBoundary>
+      <ProductProvider>
+        <CatalogContent />
+      </ProductProvider>
+    </ErrorBoundary>
   );
 }

@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useReducer, useEffect, ReactNode, useRef, useCallback } from 'react';
+import React, { createContext, useContext, useReducer, useEffect, ReactNode, useCallback } from 'react';
 import { Product } from '@/types/product';
 
 interface ProductState {
@@ -84,7 +84,6 @@ interface ProductProviderProps {
 export const ProductProvider: React.FC<ProductProviderProps> = ({ children }) => {
   const [state, dispatch] = useReducer(productReducer, initialState);
   const limit = 10;
-  const abortControllerRef = useRef<AbortController | null>(null);
 
   const fetchAllProducts = useCallback(async () => {
     dispatch({ type: 'FETCH_START' });
@@ -125,25 +124,21 @@ export const ProductProvider: React.FC<ProductProviderProps> = ({ children }) =>
 
   useEffect(() => {
     updateFilteredProducts(state.searchQuery, 0);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state.searchQuery]);
 
   const fetchMoreProducts = useCallback(() => {
     if (!state.loading && state.hasMore) {
       updateFilteredProducts(state.searchQuery, state.skip);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state.loading, state.hasMore, state.skip, state.searchQuery]);
 
   const setSearchQuery = useCallback((query: string) => {
     dispatch({ type: 'SET_SEARCH', payload: query });
   }, []);
 
-  useEffect(() => {
-    return () => {
-      if (abortControllerRef.current) {
-        abortControllerRef.current.abort();
-      }
-    };
-  }, []);
+
 
   const value: ProductContextType = {
     products: state.products,
