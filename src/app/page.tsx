@@ -3,13 +3,14 @@
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { ProductCard } from '@/components/ProductCard';
 import { ProductCardSkeleton } from '@/components/ProductCardSkeleton';
+import { ProductDetailModal } from '@/components/ProductDetailModal';
 import { ProductProvider, useProduct } from '@/contexts/ProductContext';
 import { Input } from '@/components/ui/input';
 import { CatalogLayout } from '@/components/CatalogLayout';
 import { ErrorBoundary } from '@/components/ErrorBoundary';
 
 function CatalogContent() {
-  const { products, loading, error, hasMore, fetchMoreProducts, searchQuery, setSearchQuery } = useProduct();
+  const { products, loading, error, hasMore, fetchMoreProducts, searchQuery, setSearchQuery, selectedProduct, setSelectedProduct } = useProduct();
 
   if (error) {
     return (
@@ -54,7 +55,11 @@ function CatalogContent() {
         >
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             {products.map((product) => (
-              <ProductCard key={product.id} product={product} />
+              <ProductCard
+                key={product.id}
+                product={product}
+                onClick={setSelectedProduct}
+              />
             ))}
           </div>
           {!loading && products.length === 0 && searchQuery && (
@@ -62,6 +67,11 @@ function CatalogContent() {
           )}
         </InfiniteScroll>
       </div>
+      <ProductDetailModal
+        product={selectedProduct}
+        isOpen={!!selectedProduct}
+        onClose={() => setSelectedProduct(null)}
+      />
     </CatalogLayout>
   );
 }

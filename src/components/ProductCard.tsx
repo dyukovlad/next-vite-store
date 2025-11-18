@@ -5,11 +5,16 @@ import { Product } from '@/types/product';
 
 interface ProductCardProps {
   product: Product;
+  onClick?: (product: Product) => void;
 }
 
-export const ProductCard = React.memo<ProductCardProps>(({ product }) => {
+export const ProductCard = React.memo<ProductCardProps>(({ product, onClick }) => {
+  const handleClick = () => {
+    onClick?.(product);
+  };
+
   return (
-    <Card className="w-full max-w-sm">
+    <Card className="w-full max-w-sm cursor-pointer hover:shadow-lg transition-shadow" onClick={handleClick}>
       <CardHeader>
         <Image
           src={product.thumbnail}

@@ -9,6 +9,7 @@ interface ProductState {
   hasMore: boolean;
   skip: number;
   searchQuery: string;
+  selectedProduct: Product | null;
 }
 
 type ProductAction =
@@ -16,7 +17,8 @@ type ProductAction =
   | { type: 'FETCH_SUCCESS'; payload: Product[] }
   | { type: 'FETCH_ERROR'; payload: string }
   | { type: 'SET_SEARCH'; payload: string }
-  | { type: 'SET_FILTERED_PRODUCTS'; payload: { products: Product[]; hasMore: boolean; skip: number } };
+  | { type: 'SET_FILTERED_PRODUCTS'; payload: { products: Product[]; hasMore: boolean; skip: number } }
+  | { type: 'SET_SELECTED_PRODUCT'; payload: Product | null };
 
 const initialState: ProductState = {
   products: [],
@@ -26,6 +28,7 @@ const initialState: ProductState = {
   hasMore: true,
   skip: 0,
   searchQuery: '',
+  selectedProduct: null,
 };
 
 function productReducer(state: ProductState, action: ProductAction): ProductState {
@@ -45,6 +48,8 @@ function productReducer(state: ProductState, action: ProductAction): ProductStat
       return { ...state, loading: false, error: action.payload };
     case 'SET_SEARCH':
       return { ...state, searchQuery: action.payload };
+    case 'SET_SELECTED_PRODUCT':
+      return { ...state, selectedProduct: action.payload };
     case 'SET_FILTERED_PRODUCTS':
       return {
         ...state,
@@ -65,6 +70,8 @@ interface ProductContextType {
   fetchMoreProducts: () => void;
   searchQuery: string;
   setSearchQuery: (query: string) => void;
+  selectedProduct: Product | null;
+  setSelectedProduct: (product: Product | null) => void;
 }
 
 const ProductContext = createContext<ProductContextType | undefined>(undefined);
@@ -138,7 +145,9 @@ export const ProductProvider: React.FC<ProductProviderProps> = ({ children }) =>
     dispatch({ type: 'SET_SEARCH', payload: query });
   }, []);
 
-
+  const setSelectedProduct = useCallback((product: Product | null) => {
+    dispatch({ type: 'SET_SELECTED_PRODUCT', payload: product });
+  }, []);
 
   const value: ProductContextType = {
     products: state.products,
@@ -148,6 +157,8 @@ export const ProductProvider: React.FC<ProductProviderProps> = ({ children }) =>
     fetchMoreProducts,
     searchQuery: state.searchQuery,
     setSearchQuery,
+    selectedProduct: state.selectedProduct,
+    setSelectedProduct,
   };
 
   return (
