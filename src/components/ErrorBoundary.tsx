@@ -1,6 +1,7 @@
 'use client';
 
 import React, { Component, ReactNode } from 'react';
+import { CONTAINER_CLASSES } from '@/constants';
 
 interface Props {
   children: ReactNode;
@@ -28,7 +29,7 @@ export class ErrorBoundary extends Component<Props, State> {
   render() {
     if (this.state.hasError) {
       return (
-        <div className="container mx-auto p-4">
+        <div className={CONTAINER_CLASSES}>
           <h1 className="text-3xl font-bold mb-8">Something went wrong</h1>
           <p className="text-red-500">An error occurred. Please try refreshing the page.</p>
           {process.env.NODE_ENV === 'development' && this.state.error && (

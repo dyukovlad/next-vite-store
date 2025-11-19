@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { APP_TITLE } from "@/constants";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 
@@ -13,7 +14,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Product Catalog",
+  title: APP_TITLE,
   description: "Browse and search our product catalog with infinite scroll",
 };
 

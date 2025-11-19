@@ -1,4 +1,5 @@
 import { ReactNode } from 'react';
+import { APP_TITLE, CONTAINER_CLASSES } from '@/constants';
 
 interface CatalogLayoutProps {
   children: ReactNode;
@@ -6,8 +7,8 @@ interface CatalogLayoutProps {
 
 export function CatalogLayout({ children }: CatalogLayoutProps) {
   return (
-    <div className="container mx-auto p-4">
-      <h1 className="text-3xl font-bold mb-8">Product Catalog</h1>
+    <div className={CONTAINER_CLASSES}>
+      <h1 className="text-3xl font-bold mb-8">{APP_TITLE}</h1>
       {children}
     </div>
   );
