@@ -1,135 +1,163 @@
-# Product Catalog App
+# Приложение Каталог Товаров
 
-A modern, responsive product catalog built with Next.js 16, featuring real-time search, infinite scroll, and a clean UI powered by shadcn/ui components.
+Современный, отзывчивый каталог товаров, построенный на Next.js 16, с функциями поиска в реальном времени, бесконечной прокрутки и чистым UI на базе компонентов shadcn/ui.
 
-## 🚀 Features
+## 🚀 Возможности
 
-- **Real-time Search**: Instant client-side filtering of products by title and description
-- **Infinite Scroll**: Smooth loading of additional products as you scroll
-- **Responsive Design**: Optimized grid layout for all screen sizes
-- **Loading States**: Skeleton loaders for better user experience
-- **Error Handling**: Comprehensive error boundaries and user-friendly error messages
-- **TypeScript**: Full type safety throughout the application
-- **Accessibility**: ARIA labels and semantic HTML for screen readers
-- **SEO Optimized**: Proper meta tags and page structure
+- **Поиск в реальном времени**: Мгновенная клиентская фильтрация товаров по названию и описанию
+- **Бесконечная прокрутка**: Плавная загрузка дополнительных товаров при прокрутке
+- **Модальные окна товаров**: Детальный просмотр товара при клике на карточку
+- **Адаптивный дизайн**: Оптимизированная сетка для всех размеров экранов
+- **Состояния загрузки**: Скелетные загрузчики для лучшего пользовательского опыта
+- **Обработка ошибок**: Комплексные границы ошибок и понятные сообщения об ошибках
+- **TypeScript**: Полная типизация во всем приложении
+- **Доступность**: ARIA-метки и семантический HTML для программ чтения с экрана
+- **SEO оптимизация**: Правильные мета-теги и структура страницы
+- **Storybook**: Документация компонентов с интерактивными примерами
 
-## 🛠️ Tech Stack
+## 🛠️ Технологический стек
 
-- **Framework**: Next.js 16 with App Router
-- **Language**: TypeScript
-- **Styling**: Tailwind CSS
-- **UI Components**: shadcn/ui
-- **State Management**: React Context + useReducer
-- **API**: DummyJSON (for demo purposes)
-- **Icons**: Lucide React
+- **Фреймворк**: Next.js 16 с App Router
+- **Язык**: TypeScript
+- **Стилизация**: Tailwind CSS
+- **UI Компоненты**: shadcn/ui
+- **Управление состоянием**: React Context + useReducer
+- **API**: DummyJSON (для демонстрации)
+- **Иконки**: Lucide React
 
-## 📋 Prerequisites
+## 📋 Предварительные требования
 
-- Node.js 18.0 or higher
-- npm, yarn, or pnpm
+- Node.js 18.0 или выше
+- npm, yarn или pnpm
 
-## 🚀 Getting Started
+## 🚀 Начало работы
 
-### Installation
+### Установка
 
-1. **Clone the repository**
+1. **Клонируйте репозиторий**
    ```bash
    git clone https://github.com/your-username/product-catalog.git
    cd product-catalog
    ```
 
-2. **Install dependencies**
+2. **Установите зависимости**
    ```bash
    npm install
-   # or
+   # или
    yarn install
-   # or
+   # или
    pnpm install
    ```
 
-3. **Start the development server**
+3. **Запустите сервер разработки**
    ```bash
    npm run dev
-   # or
+   # или
    yarn dev
-   # or
+   # или
    pnpm dev
    ```
 
-4. **Open your browser**
+4. **Откройте браузер**
 
-   Navigate to [http://localhost:3000](http://localhost:3000) to see the application.
+   Перейдите по адресу [http://localhost:3000](http://localhost:3000) для просмотра приложения.
 
-## 📁 Project Structure
+## 📁 Структура проекта
 
 ```
 src/
 ├── app/
-│   ├── layout.tsx          # Root layout with metadata
-│   ├── page.tsx            # Main catalog page
-│   └── globals.css         # Global styles
+│   ├── layout.tsx          # Корневой layout с метаданными
+│   ├── page.tsx            # Главная страница каталога
+│   └── globals.css         # Глобальные стили
 ├── components/
-│   ├── ui/                 # shadcn/ui components
+│   ├── ui/                 # Компоненты shadcn/ui
 │   │   ├── card.tsx
-│   │   └── input.tsx
-│   ├── CatalogLayout.tsx   # Shared layout component
-│   ├── ErrorBoundary.tsx   # Error boundary component
-│   ├── ProductCard.tsx     # Product display component
-│   └── ProductCardSkeleton.tsx # Loading skeleton
+│   │   ├── input.tsx
+│   │   └── dialog.tsx
+│   ├── CatalogLayout.tsx   # Общий компонент layout
+│   ├── ErrorBoundary.tsx   # Граница ошибок
+│   ├── ProductCard.tsx     # Компонент отображения товара
+│   ├── ProductCardSkeleton.tsx # Скелет загрузки
+│   └── ProductDetailModal.tsx # Модальное окно товара
+├── constants/
+│   └── index.ts            # Константы приложения
 ├── contexts/
-│   └── ProductContext.tsx  # State management
+│   └── ProductContext.tsx  # Управление состоянием
+├── data/
+│   └── staticProducts.ts   # Статические данные товаров
+├── hooks/
+│   └── useProductData.ts   # Кастомный хук для данных
 ├── lib/
-│   └── utils.ts            # Utility functions
+│   └── utils.ts            # Вспомогательные функции
+├── reducers/
+│   └── productReducer.ts   # Reducer для состояния
 └── types/
-    └── product.ts          # TypeScript interfaces
+    ├── product.ts          # Интерфейсы товаров
+    └── productContext.ts   # Типы контекста
 ```
 
-## 🏗️ Architecture
+## 🏗️ Архитектура
 
-### State Management
-The app uses React Context with useReducer for predictable state updates:
-- Product fetching and caching
-- Search query management
-- Loading and error states
-- Infinite scroll pagination
+### Управление состоянием
+Приложение использует React Context с useReducer для предсказуемых обновлений состояния:
+- Загрузка и кеширование товаров
+- Управление поисковым запросом
+- Состояния загрузки и ошибок
+- Пагинация бесконечной прокрутки
 
-### Data Flow
-1. Initial load: Fetch all products from API
-2. Search: Filter products client-side instantly
-3. Infinite scroll: Load more filtered products on demand
+### Поток данных
+1. Начальная загрузка: Получение всех товаров из API
+2. Поиск: Фильтрация товаров на клиенте мгновенно
+3. Бесконечная прокрутка: Загрузка дополнительных отфильтрованных товаров по запросу
 
-### Components
-- **ProductProvider**: Context provider managing global state
-- **CatalogLayout**: Reusable layout wrapper
-- **ProductCard**: Individual product display with memoization
-- **ErrorBoundary**: Catches and displays React errors gracefully
+### Компоненты
+- **ProductProvider**: Провайдер контекста, управляющий глобальным состоянием
+- **CatalogLayout**: Переиспользуемая обертка layout
+- **ProductCard**: Отдельное отображение товара с мемоизацией
+- **ProductDetailModal**: Модальное окно с деталями товара
+- **ProductCardSkeleton**: Скелет загрузки товара
+- **ErrorBoundary**: Ловит и отображает ошибки React
 
-## 🔧 Available Scripts
+## 🔧 Доступные скрипты
 
-- `npm run dev` - Start development server
-- `npm run build` - Build for production
-- `npm run start` - Start production server
-- `npm run lint` - Run ESLint
+- `npm run dev` - Запуск сервера разработки
+- `npm run build` - Сборка для продакшена
+- `npm run start` - Запуск продакшен сервера
+- `npm run lint` - Запуск ESLint
+- `npm run storybook` - Запуск Storybook для просмотра компонентов
 
 ## 🌐 API
 
-This demo uses [DummyJSON](https://dummyjson.com/) for product data. In a real application, replace with your own API endpoints.
+Эта демонстрация использует [DummyJSON](https://dummyjson.com/) для данных о товарах с fallback на статические данные. В реальном приложении замените на свои конечные точки API.
 
-## 🤝 Contributing
+## 📚 Storybook
 
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
+Для просмотра интерактивной документации компонентов запустите:
 
-## 📄 License
+```bash
+npm run storybook
+```
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+Откройте [http://localhost:6006](http://localhost:6006) для просмотра историй компонентов с различными состояниями и props.
 
-## 🙏 Acknowledgments
+## 🤝 Содействие
 
-- [Next.js](https://nextjs.org/) - The React framework
-- [shadcn/ui](https://ui.shadcn.com/) - Beautiful UI components
-- [Tailwind CSS](https://tailwindcss.com/) - Utility-first CSS framework
-- [DummyJSON](https://dummyjson.com/) - Fake API for testing
+1. Форкните репозиторий
+2. Создайте ветку функционала (`git checkout -b feature/amazing-feature`)
+3. Внесите изменения (`git commit -m 'Add amazing feature'`)
+4. Отправьте в ветку (`git push origin feature/amazing-feature`)
+5. Откройте Pull Request
+
+## 📄 Лицензия
+
+Этот проект лицензирован под MIT License - см. файл [LICENSE](LICENSE) для деталей.
+
+## 🙏 Благодарности
+
+- [Next.js](https://nextjs.org/) - Фреймворк React
+- [shadcn/ui](https://ui.shadcn.com/) - Красивые UI компоненты
+- [Tailwind CSS](https://tailwindcss.com/) - CSS фреймворк утилит
+- [DummyJSON](https://dummyjson.com/) - Фейковый API для тестирования
+- [Storybook](https://storybook.js.org/) - Инструмент для разработки UI компонентов
+- [Lucide React](https://lucide.dev/) - Красивые иконки
