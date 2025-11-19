@@ -38,6 +38,13 @@ export function productReducer(
         hasMore: action.payload.hasMore,
         skip: action.payload.skip,
       };
+    case 'APPEND_PRODUCTS':
+      return {
+        ...state,
+        products: [...state.products, ...action.payload.products],
+        hasMore: action.payload.hasMore,
+        skip: action.payload.skip,
+      };
     case 'SET_SELECTED_PRODUCT':
       return { ...state, selectedProduct: action.payload };
     default:

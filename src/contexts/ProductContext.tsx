@@ -65,7 +65,14 @@ export const ProductProvider: React.FC<ProductProviderProps> = ({
         state.searchQuery,
         state.skip
       );
-      dispatch({ type: 'SET_FILTERED_PRODUCTS', payload: result });
+      dispatch({
+        type: 'APPEND_PRODUCTS',
+        payload: {
+          products: result.products,
+          hasMore: result.hasMore,
+          skip: result.skip
+        }
+      });
     }
   }, [
     state.loading,

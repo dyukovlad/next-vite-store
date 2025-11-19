@@ -17,6 +17,7 @@ export type ProductAction =
   | { type: 'FETCH_ERROR'; payload: string }
   | { type: 'SET_SEARCH'; payload: string }
   | { type: 'SET_FILTERED_PRODUCTS'; payload: { products: Product[]; hasMore: boolean; skip: number } }
+  | { type: 'APPEND_PRODUCTS'; payload: { products: Product[]; hasMore: boolean; skip: number } }
   | { type: 'SET_SELECTED_PRODUCT'; payload: Product | null };
 
 export interface ProductContextType {
