@@ -1,25 +1,18 @@
-import React, { createContext, useContext, useReducer, useEffect, ReactNode, useCallback } from 'react';
+import React, {
+  createContext,
+  useContext,
+  useReducer,
+  useEffect,
+  useCallback,
+} from 'react';
 import { Product } from '@/types/product';
 import { staticProducts } from '@/data/staticProducts';
-
-interface ProductState {
-  products: Product[];
-  allProducts: Product[];
-  loading: boolean;
-  error: string | null;
-  hasMore: boolean;
-  skip: number;
-  searchQuery: string;
-  selectedProduct: Product | null;
-}
-
-type ProductAction =
-  | { type: 'FETCH_START' }
-  | { type: 'FETCH_SUCCESS'; payload: Product[] }
-  | { type: 'FETCH_ERROR'; payload: string }
-  | { type: 'SET_SEARCH'; payload: string }
-  | { type: 'SET_FILTERED_PRODUCTS'; payload: { products: Product[]; hasMore: boolean; skip: number } }
-  | { type: 'SET_SELECTED_PRODUCT'; payload: Product | null };
+import {
+  ProductState,
+  ProductAction,
+  ProductContextType,
+  ProductProviderProps,
+} from '@/types/product';
 
 const initialState: ProductState = {
   products: [],
@@ -32,7 +25,10 @@ const initialState: ProductState = {
   selectedProduct: null,
 };
 
-function productReducer(state: ProductState, action: ProductAction): ProductState {
+const productReducer = (
+  state: ProductState,
+  action: ProductAction
+): ProductState => {
   switch (action.type) {
     case 'FETCH_START':
       return { ...state, loading: true, error: null };
@@ -61,19 +57,7 @@ function productReducer(state: ProductState, action: ProductAction): ProductStat
     default:
       return state;
   }
-}
-
-interface ProductContextType {
-  products: Product[];
-  loading: boolean;
-  error: string | null;
-  hasMore: boolean;
-  fetchMoreProducts: () => void;
-  searchQuery: string;
-  setSearchQuery: (query: string) => void;
-  selectedProduct: Product | null;
-  setSelectedProduct: (product: Product | null) => void;
-}
+};
 
 const ProductContext = createContext<ProductContextType | undefined>(undefined);
 
@@ -85,11 +69,9 @@ export const useProduct = () => {
   return context;
 };
 
-interface ProductProviderProps {
-  children: ReactNode;
-}
-
-export const ProductProvider: React.FC<ProductProviderProps> = ({ children }) => {
+export const ProductProvider: React.FC<ProductProviderProps> = ({
+  children,
+}) => {
   const [state, dispatch] = useReducer(productReducer, initialState);
   const limit = 10;
 
@@ -110,9 +92,10 @@ export const ProductProvider: React.FC<ProductProviderProps> = ({ children }) =>
   }, []);
 
   const updateFilteredProducts = (query: string, additionalSkip = 0) => {
-    const filtered = state.allProducts.filter(product =>
-      product.title.toLowerCase().includes(query.toLowerCase()) ||
-      product.description.toLowerCase().includes(query.toLowerCase())
+    const filtered = state.allProducts.filter(
+      (product) =>
+        product.title.toLowerCase().includes(query.toLowerCase()) ||
+        product.description.toLowerCase().includes(query.toLowerCase())
     );
     const start = additionalSkip;
     const end = start + limit;
@@ -121,7 +104,8 @@ export const ProductProvider: React.FC<ProductProviderProps> = ({ children }) =>
     dispatch({
       type: 'SET_FILTERED_PRODUCTS',
       payload: {
-        products: additionalSkip === 0 ? products : [...state.products, ...products],
+        products:
+          additionalSkip === 0 ? products : [...state.products, ...products],
         hasMore,
         skip: end,
       },
@@ -165,8 +149,6 @@ export const ProductProvider: React.FC<ProductProviderProps> = ({ children }) =>
   };
 
   return (
-    <ProductContext.Provider value={value}>
-      {children}
-    </ProductContext.Provider>
+    <ProductContext.Provider value={value}>{children}</ProductContext.Provider>
   );
 };
